@@ -1,0 +1,6 @@
+argparse
+python-dotenv
+hvac
+requests
+pyspark
+pytest

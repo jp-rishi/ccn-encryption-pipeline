@@ -1,0 +1,16 @@
+[Unit]
+Description=SFTP Data Monitoring Service
+After=network.target
+
+[Service]
+User=auto_data_processor
+Group=data_processors
+Environment="BASE_APP_DIR=/opt/data-encryption-pipeline-to-adls"
+Environment="SPARK_HOME=/usr/local/spark"
+Environment="PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/spark/bin"
+ExecStart=/bin/bash -c 'source $BASE_APP_DIR/config/config.env && $BASE_APP_DIR/bin/file_monitoring.sh'
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

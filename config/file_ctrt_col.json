@@ -1,0 +1,331 @@
+{
+  "t_ae_alert": {
+      "container": "aceplus",
+      "cc_columns": ["CNO", "CUSTNO"],
+      "free_text_columns": [],
+      "skip_check_columns": [
+          "CNO", "HRCVDT", "HRCVTM", "HRCVSEC", "HRCVSECBRNNO", "RULEID", "SID", "FAMCD", "REISSCD", 
+          "CUSTNO", "PID", "ORTBLID", "SEQNO", "RISKCD", "HIGHRISKFLG", "AUTHPOSTFLG", "RULETYP", "INJSTTYP", "CONFIRMFLG", 
+          "CHECKOPID", "INJSTTYPUPDOPID", "UPDDTTM", "UPDOPID"
+      ],
+      "delimiter": ","
+  },
+  "t_ae_auth": {
+      "container": "aceplus",
+      "cc_columns": ["CNO", "CUSTNO"],
+      "free_text_columns": [],
+      "skip_check_columns": [
+          "CNO", "HRCVDT", "HRCVTM", "HRCVSEC", "HRCVSECBRNNO", "HRCVDAY", "RCVDTTM", "RCVMSEC", "SID", "FAMCD", 
+          "REISSCD", "CUSTNO", "PID", "CTG", "SUBCTG", "AUTHID", "AUTHMODE", "DATATYP", "CANCELDIV", "TRBCANDIV", 
+          "OHRCVDT", "OHRCVTM", "OHRCVSEC", "OHRCVSECBRNNO", "REALSCORE", "REALJUDGRSLT", "REALPRORES", "ACEPLUSSCORE", 
+          "ACEPLUSSCOREMODELID", "ACEPLUSSCOREMODELSUBID", "RULEJUDGRSLT", "MCTRULEJUDGRSLT", "ACEPLUSJUDGRSLT", 
+          "ACEPLUSPRORES", "REFPRORES", "REFPROFLG", "RSVINVALIDFLGID", "INJSTNORULEFLG", "HITRULEID", "MCTHITRULEID", 
+          "REALHITRULEID", "SALESITEMKEY", "CANCELITEMKEY", "HSTJUDGTIME", "CANCELFLG", "TIMEOUTFLG", "SELECTERKEY", 
+          "SIMKEY", "AUTHPOSTFLG", "AUTHUPDTID", "FAMDIV", "OWNOTHCODIV", "INOUTDIV", "TRDTYP", "SCTYP", "PAYDIV", 
+          "AUTHJUDGRES", "FINJUDGRES", "ERRCD", "ACKNO", "POSTYP", "MAGEXPDT", "POSAMTS", "POSAMTC", "SNDTYP", 
+          "SUBSNDTYP", "USEAMT", "MCDCD", "MCTCD", "TERMNO", "USEDT", "MCTINDCDAUTH", "NATIONALCD", "CURRENCYCD", 
+          "INDCOCD", "INDCOSUBCD", "INDBNKCD", "INDBRNCD", "TELTRNDIV", "ACTDIV", "CDNUMDIFFLG", "FOCEAPVDIV", 
+          "DIVNUM", "FEPRETRYFLG", "ICTRD", "OFFLINEPIN", "SECURE3D", "SECCDINPUT", "SECCDREFRSLT", "CUSTCLASS", 
+          "BRANDTYP", "TRDTYPSUBCD", "SUBSCTYP", "CHARGEBACKSTATUS", "SLMCTCD", "SLTRDT", "SLPOSTDT", "SLTRAMT", 
+          "SLDIVNUM", "SLTAXPOSTAGEFEE", "SLBONUSSTARTDT", "SLBONUSDIVNUM", "SLBONUSTOTALADDAMT", "SLBONUSPAYMONTHS", 
+          "SLBONUSPAYMONTHDIVNUMS", "SLBONUSADDAMTS", "SLBONUSPAYMONTHW", "SLBONUSPAYMONTHDIVNUMW", "SLBONUSADDAMTW", 
+          "SLAFLMCDCD", "SLAFLMCDNM", "SLTYP", "SLMCDTYP", "SLCATFLG", "SLMICROREFNO", "SLNATIONALCD", "SLSTATECD", 
+          "SLMCTCITYNAME", "SLOUTMCTNAME", "SLMCTCATCD", "SLCURRENCYAMT", "SLSLIPNO", "SLCANCELDIV", "SLCANCELDT", 
+          "SLCANCELRSNDIV", "SOMICROREFNO", "SOTRDTYP", "SOTRDCD", "SODIVNUM", "SOMCTNO", "SOTRDT", "SOPOSTDT", 
+          "SOTRAMT", "SOTAXPOSTAGEFEE", "SOTRAMTTOTAL", "SOACKNO", "SOBONUSMONTHSIGN", "SOBONUSDIVNUM", "SOBONUSAMT", 
+          "SOBONUSSTARTYEARMONTH", "SOBONUSPAYMONTHS", "SOBONUSPAYMONTHW", "SOMCTKANANAME", "SOCARDDIV", "SOISSUERKANANAME", 
+          "SOISSUERNO", "SOMJCD", "SOTCC", "SOMCTDIVCD", "TRANSTATUS", "ECI", "SOXID", "STORENAME", "TERMID", 
+          "SLSTATECDAUTH", "CITYNAME", "LOCALAMT", "ACQUIRERBIN", "CDNUMINPUTFLG", "SLCONSECUTIVENO", "SPJUDGRSLT", 
+          "SPRULEID", "SPSCORE", "DPAN", "TOKENREQUESTERID", "CAVV", "INDICATOR3DS", "CDCVM", "WALLETID", "RECURRINGFLG", 
+          "INSTANTPAYSRVTARGETDIV", "ACELINKAGEFLG", "PAUSEFLG", "POSENTRYMODE", "POSCRDDTTERM"
+      ],
+      "delimiter": ","
+  },
+  "t_ae_card": {
+      "container": "aceplus",
+      "cc_columns": ["CNO", "CUSTNO"],
+      "free_text_columns": [],
+      "skip_check_columns": [
+          "CNO", "SID", "FAMCD", "REISSCD", "CUSTNO", "PID", "INVESTIGATIONDIV", "INVESTIGATIONDIVUPDDT", 
+          "INVESTIGATIONDIVUPDOPID", "RSVINVALIDFLGID", "RSVINVALIDFLGTERMDIV", "RSVINVALIDFLGTERMF", 
+          "RSVINVALIDFLGTERMT", "AMCALLCNT", "PMCALLCNT", "UPDDTTM", "UPDOPID", "CARDTYP", "CARDISSUETYP", 
+          "CARDSTATUS", "VALIDTERM", "ADMISSIONDT", "WITHDRAWALDT", "LATESTISSUEDT", "LMTAMTS", "LMTAMTC", 
+          "INVALIDCARDDIV", "INVALIDDNTRYDT", "ERASEDT", "HCUPDDT", "HCUPDTM", "HCUPDDIV", "CUSTOMERDIV", 
+          "CUSTOMERAREACD", "KANANAME", "KANJINAME", "ZIPCODE", "ADDRESS", "HOMETELNO", "HANDYTELNO", 
+          "OTHERSTELNO", "BIRTHDAY", "SEX", "CUSTOMERSTATUS", "ACCOUNTSTATUS", "OFFICECONAME", "OFFICEPOST", 
+          "OFFICEADDRESS", "OFFICETELNO", "CREDITLEVEL", "CONTACTSTARTDT", "CONTACTSTARTOPID", "CONTACTSTARTCTG", 
+          "NEXTCONTACTDT", "DOCMKDT", "DOCMKOPID", "DOCDIV", "DOCUNPRTDIV", "DOCSENDNO", "ICCARDDIV", 
+          "SECURE3DDIV", "CARDBPCD", "RSVINVALIDFLGUPDDTTM", "RSVINVALIDFLGUPDOPID", "DDBANKNAME", 
+          "DDBRANCHNAME", "RKPRESENTLANK", "RKENTRYLANK", "RKCARDLANK", "RKCARDDIV", "INTERRUPTEDINFO", 
+          "CARDNAME", "WITHDRAWALRESERVEFLG"
+      ]
+      ,
+      "delimiter": ","
+  },
+  "t_ae_merchant": {
+      "container": "aceplus",
+      "cc_columns": [],
+      "free_text_columns": [],
+      "skip_check_columns": [
+          "MCTCD", "MCTZIPCODE", "MCTADDRESS", "MCTTELNO", "MCTFAXNO", "MCTCHARGECD", "MCTNAME", 
+          "MCTBUSINESSTMF", "MCTBUSINESSTMT", "MCTINDCD", "HMCTUPDDT", "HMCTERASEDT", "MCTAREACD", 
+          "UPDDTTM", "UPDOPID", "RKCMCTINDCD", "MCONTRACTDT", "MTRDDIV", "MSECURE3DDIV", "MSTATUSCD", 
+          "MVMINDUSTCD", "MCTUSEAMTAVG", "MCTDAYCOUNTAVG", "MCTDAYAMTAVG", "MCTDAYCOUNTAPPROVEAVG", 
+          "MCTDAYAMTAPPROVEAVG", "MCTDAYCOUNTCALLAVG", "MCTDAYAMTCALLAVG", "MCTDAYCOUNTDECLINEAVG", 
+          "MCTDAYAMTDECLINEAVG", "MCTDAYCOUNTPICKUPAVG", "MCTDAYAMTPICKUPAVG", "MCTDAYCOUNTCANCELAVG", 
+          "MCTDAYAMTCANCELAVG", "MCTMONTHCOUNTAVG", "MCTMONTHAMTAVG", "MCTMONTHCOUNTAPPROVEAVG", 
+          "MCTMONTHAMTAPPROVEAVG", "MCTMONTHCOUNTCALLAVG", "MCTMONTHAMTCALLAVG", "MCTMONTHCOUNTDECLINEAVG", 
+          "MCTMONTHAMTDECLINEAVG", "MCTMONTHCOUNTPICKUPAVG", "MCTMONTHAMTPICKUPAVG", "MCTMONTHCOUNTCANCELAVG", 
+          "MCTMONTHAMTCANCELAVG", "MCTUSEAMTMAX", "MCTMONTHCOUNTMAX", "MCTMONTHAMTMAX", "MCTDAYFRAUDCOUNTAVG", 
+          "MCTDAYFRAUDAMTAVG", "MCTMONTHFRAUDCOUNTAVG", "MCTMONTHFRAUDAMTAVG", "MCTMONTHFRAUDCOUNTMAX", 
+          "MCTMONTHFRAUDAMTMAX", "MCTPROFUPDDT", "MCTINJSTTYP", "MCTINJSTTYPUPDOPID", "MCTCPPFEAR", 
+          "MCTCPPFEARUPDOPID"
+      ],
+      "delimiter": ","
+  },
+  "t_ae_terminal": {
+      "container": "aceplus",
+      "cc_columns": [],
+      "free_text_columns": [],
+      "skip_check_columns": [
+          "TERMNO", "TERMZIPCODE", "TERMADDRESS", "TERMTELNO", "TERMFAXNO", "TERMSETPLACE", "TERMCHARGECD", 
+          "TERMBUSINESSTMF", "TERMBUSINESSTMT", "HTERMUPDDT", "HTERMERASEDT", "TERMAREACD", "TERMCTG", 
+          "MCTCD", "UPDDTTM", "UPDOPID", "ICTRDDIV", "TERMUSEAMTAVG", "TERMDAYCOUNTAVG", "TERMDAYAMTAVG", 
+          "TERMDAYCOUNTAPPROVEAVG", "TERMDAYAMTAPPROVEAVG", "TERMDAYCOUNTCALLAVG", "TERMDAYAMTCALLAVG", 
+          "TERMDAYCOUNTDECLINEAVG", "TERMDAYAMTDECLINEAVG", "TERMDAYCOUNTPICKUPAVG", "TERMDAYAMTPICKUPAVG", 
+          "TERMDAYCOUNTCANCELAVG", "TERMDAYAMTCANCELAVG", "TERMMONTHCOUNTAVG", "TERMMONTHAMTAVG", 
+          "TERMMONTHCOUNTAPPROVEAVG", "TERMMONTHAMTAPPROVEAVG", "TERMMONTHCOUNTCALLAVG", "TERMMONTHAMTCALLAVG", 
+          "TERMMONTHCOUNTDECLINEAVG", "TERMMONTHAMTDECLINEAVG", "TERMMONTHCOUNTPICKUPAVG", "TERMMONTHAMTPICKUPAVG", 
+          "TERMMONTHCOUNTCANCELAVG", "TERMMONTHAMTCANCELAVG", "TERMUSEAMTMAX", "TERMMONTHCOUNTMAX", 
+          "TERMMONTHAMTMAX", "TERMDAYFRAUDCOUNTAVG", "TERMDAYFRAUDAMTAVG", "TERMMONTHFRAUDCOUNTAVG", 
+          "TERMMONTHFRAUDAMTAVG", "TERMMONTHFRAUDCOUNTMAX", "TERMMONTHFRAUDAMTMAX", "TERMPROFUPDDT", 
+          "TERINJSTTYP", "TERINJSTTYPUPDOPID", "TERCPPFEAR", "TERCPPFEARUPDOPID"
+      ],
+      "delimiter": ","
+  },
+  "t_ds00018d_l00": {   
+      "container":"dss",
+      "cc_columns":["KYF","RYO_CRD_KYK_BNG"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_ds00020d_l00": {  
+      "container":"dss", 
+      "cc_columns":["KYF"],
+      "free_text_columns":["NST"],
+      "skip_check_columns": [
+          "KUB", "TIK_COD", "HKO_JOT", "HKP", "YUK_NNG", "RKV", "HBS_YMD", "SQZ_HKO_KUV", "HIK", "KEI_SQA_KUV", "CAS_KUV", 
+          "CIC_TRN_BNG", "SFS_KUV", "SIO_SFS_KUV", "SEN_KUV", "YKJ_NKH_KUV", "JFK_KEK_KUV1", "JFK_KEK_KUV2", "JFK_KEK_KUV3", 
+          "JFK_KEK_KUV4", "JFK_KEK_KUV5", "JFK_KEK_KUV6", "JFK_KEK_KUV7", "JFK_KEK_KUV8", "JFK_KEK_KUV9", "JFK_KEK_KUVA", 
+          "JFK_KEK_KUVB", "JFK_KEK_KUVC", "JFK_GOK", "SHP_GNG", "CAS_GNG", "SHP_RYG", "CAS_RYG", "ONP_RYG", "HKE_COD", "HKE_MKN", 
+          "KEI_YMD", "HAN_JGC", "TRD", "BSU_JGC", "HKO_KTI_KUV", "SSU_TOH_YMD", "SSU_NKN_IDB", "SKN_BRC", "MNL", "CEK_MNL1", 
+          "CEK_MNL2", "CEK_MNL3", "CEK_MNL4", "CEK_MNL5", "CEK_MNL6", "CEK_MNL7", "CEK_MNL8", "CEK_MNL9", "CEK_MNLA", "CEK_MNLB", 
+          "CEK_MNLC", "MIS_UMU", "SDI_MNC", "MIS_GSU", "SKU_SKP_KUV", "KJY_ZDK", "AJA_GKN_ZDK", "AJA_TSR_ZDK", "RVC_GKN_ZDK", 
+          "RVC_TSR_ZDK", "AJB_GKN_ZDK", "AJB_TSR_ZDK", "RVS_GKN_ZDK", "RVS_TSR_ZDK", "CAD_SZT", "MNY_FLG", "CARD_FLG", "JFK_SEI_GOK", 
+          "JFK_SAI_GOK", "JFK_HRI_GOK", "GNG_ATO_FLG", "GNG_UPD_KUV", "SHP_RYG_MON", "CAS_RYG_MON", "ONP_RYG_MON", "KJY_ZDK_MON", 
+          "AJA_GKN_ZDK_MON", "AJA_TSR_ZDK_MON", "RVC_GKN_ZDK_MON", "RVC_TSR_ZDK_MON", "AJB_GKN_ZDK_MON", "AJB_TSR_ZDK_MON", "RVS_GKN_ZDK_MON", 
+          "RVS_TSR_ZDK_MON", "CAD_SZT_MON", "TRH_MKT_001", "TRH_MKT_002", "TRH_MKT_003", "TRH_MKT_004", "TRH_MKT_005", "TRH_MKT_006", 
+          "TRH_MKT_007", "TRH_MKT_008", "TRH_MKT_009", "TRH_MKT_010", "TRH_MKT_011", "CAD_TMK_FLG", "FHJ_FLG", "IFRS15_YMD", "CAD_DSN_COD", 
+          "MON_UPD_FLG", "DAY_UPD_FLG", "KJYN_YMD", "ZGG_YMD", "KYF", "NST"
+      ],
+      "delimiter": ","
+  },
+  "t_ds00021d_l00": { 
+      "container":"dss",  
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_acc_ds00030d_l00": {   
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_acc_ds00035d_l00": {   
+      "container":"dss",
+      "cc_columns":["KYF"],        
+      "free_text_columns":["KEY_CLM","NNI_CLM_1","NNI_CLM_2","NNI_CLM_3","NNI_CLM_4","NNI_CLM_5","NNI_CLM_6"],
+      "skip_check_columns":[
+          "TRC_YMD", "TRC_HMS", "TRC_YMD_TTB", "TRC_COD", "CAD_TIK_COD", "BU_KUV", "ZGG_YMD",
+          "KYF","KEY_CLM","NNI_CLM_1","NNI_CLM_2","NNI_CLM_3","NNI_CLM_4","NNI_CLM_5","NNI_CLM_6" 
+      ],
+      "delimiter": ","
+  },
+  "t_ds00037d_l00": {   
+      "container":"dss",
+      "cc_columns":["KYF", "PRM_IKO_KYF"],        
+      "free_text_columns":["KMK_VAL_1"],
+      "skip_check_columns": [
+          "DATAID", "CAD_UKE_ID", "MKO_NNG_KUV", "MKO_Y", "MKO_M", "MKO_D", "TIK_COD", "CAD_SHI_MES", "BTI_COD", "SIO_SFS_KUV", 
+          "KCM_SEI", "KCM_MEI", "KGS_SEI", "KGS_MEI", "SEX_KUV", "SNG_NNG_KUV", "SNG_Y", "SNG_M", "SNG_D", "HGS_UMU", "KDM_UMU", 
+          "DKY_JKY", "KZQ_KUV", "JTA_TDC", "PCM", "KTM", "MIL_KUV", "MIK_HSN_KIB_UMU", "JYK_JKY_COD", "CJU_NNS", "CJU_GES", 
+          "KIO_KRI_KNG", "KBU_YUS_KNG", "KNM_JKY_KUV", "NNK_SHI_KUV", "KMS_TDC", "IZK_NNS", "STG_YTI_NNG", "STG_YTI_Y", "STG_YTI_M", 
+          "NSU_KUV", "SKC_COD", "SKG_COD", "GSC", "SHK_KUV", "JGY_SUU_KUV", "KGI_RYO_KUV", "SHP_MIN_PEI", "SHO_BNS_KSG", "CAS_MIN_PEI", 
+          "CAS_BNS_KSG", "KKN_COD", "SCO", "ETC_TIO_FLG", "KZQ_TDG_KUV", "KMK_VAL_1", "KMK_GDS_2", "KMK_GDS_3", "SKS_ID", "HON_KAK_COD", 
+          "UKE_JKY_STS", "KYF", "STSUPD", "HCB", "TRD", "SSW_KOS_YMD", "RAK_RNK", "RAK_ESY_ID", "MKO_TYP", "PRM_IKO_KYF", "SEK_TEI_KUV", 
+          "AFE_COD", "MKO_TMT_KUV", "SNS_YSD", "ZKM_NSU", "KIO_KRI_KNS", "KIO_KRI_HNS", "JDR_FLG", "KEI_DNG_DOI_FLG", "DTA_YMD", "KUB", 
+          "HCB_VIP", "KDM_NUM", "SNU_KTI", "SIK_SHT", "TSH_KIS_001", "KRI_KNG_001", "KRI_KIL_001", "TSH_KIS_002", "KRI_KNG_002", 
+          "KRI_KIL_002", "TSH_KIS_003", "KRI_KNG_003", "KRI_KIL_003", "VIP_KOS_YMD", "SMP_MKO_FLG", "PCM_INH_FLG", "FPM_INH_FLG", 
+          "ENR_FOM_TYP", "TRH_MKT_001", "TRH_MKT_002", "TRH_MKT_003", "TRH_MKT_004", "TRH_MKT_005", "TRH_MKT_006", "TRH_MKT_007", 
+          "TRH_MKT_008", "TRH_MKT_009", "TRH_MKT_010", "TRH_MKT_011", "HGS_SKN_KNS", "HGS_SKN_KNG", "HGS_HNS", "STI_NSU", "YCK_KNG", 
+          "HGS_ZKM_NSU", "STI_NUM", "RON_YTN_UMU", "HON_NSU_UMU", "SMP_ADD_FLG", "EDY_FEE", "KZQ_EDY_FEE", "EDY_TYP", "EDY_TYP_001", 
+          "EDY_TYP_002", "EDY_TYP_003", "RAK_CAD_RCM_PMS", "TOP_RAK_MKO_FLG", "TOP_BEN_MKO_FLG", "EDY_PAC_FLG", "PAC_JKO_HNT_KNG", 
+          "PAC_KNG", "PAC_JGN_KNG", "BLUE_KOSU_STK", "RKI_DOU_MKO_FLG", "CAD_DSN_COD", "RBK_KOZ_HYW_FLG", "RBK_KOZ_MKO_FLG", 
+          "RBK_SPL_MKO_FLG", "TIK_MKO_FLG", "NRK_JKY_KUV", "SOK_NYU_KUV", "SOK_MKO_UMU_FLG", "SOK_KEK_KUV", "TOA_COD", "CAD_MKO_DTM", 
+          "HBK_MIL_PMS", "FRE_HKN_KVN","KYF", "PRM_IKO_KYF", "KMK_VAL_1"
+      ], 
+      "delimiter": ","
+  },
+  "t_ds00038d_l00": {   
+      "container":"dss",
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_acc_ds00230d_l00": { 
+      "container":"dss",  
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_ds00300d_l00": { 
+      "container":"dss",  
+      "cc_columns":["KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [
+          "KYF", "SRI_YMD", "BRD_KUV", "KKN_KGI_KUV", "CAN_KUV", "OSR_SNN_BNG", "RYN", "URI_SHI_YMD", "RYG", "RYG_CIG_TUK", "MCC", 
+          "CIG_TUK_COD", "HTM_TRH_SKV_COD", "KMN_KYF", "KMY", "KMJ", "JCB_KMN_KYF", "RYK", "TKN_REQ_ID", "WLT_ID", "POS_ENTM", 
+          "TKN_NO", "DTA_YMD", "ZGG_YMD" 
+      ],
+      "delimiter": ","
+  },
+  "t_ds00471d_l00": { 
+      "container":"dss",  
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_ds00473d_l00": { 
+      "container":"dss",  
+      "cc_columns":[],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": "\t"
+  },
+  "t_ds00680d_l00": {  
+      "container":"dss", 
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_ds00700m_l00": { 
+      "container":"dss",  
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_acc_ds00970d_l00": {   
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_dml_ds00980m_l00": {  
+      "container":"dss", 
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_dml_ds00990m_l00": {  
+      "container":"dss", 
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_dml_ds01170d_l00": {  
+      "container":"dss", 
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_dml_ds01180m_l00": { 
+      "container":"dss",  
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_dml_ds01181m_l00": { 
+      "container":"dss",  
+      "cc_columns":["KYF", "RYO_CRD_KYK_BNG"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_dml_ds01340m_l00": { 
+      "container":"dss",  
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_dml_ds01350d_l00": { 
+      "container":"dss",  
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_dml_ds01360m_l00": {   
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_dml_ds01370m_l00": { 
+      "container":"dss",  
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_acc_feature_value": { 
+      "container":"dss",  
+      "cc_columns":["KYF", "OYA_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  },
+  "t_acc_ds00970d1_l00": { 
+      "container":"dss",  
+      "cc_columns":["KYF", "AD_KYF"],        
+      "free_text_columns":[],
+      "skip_check_columns": ["KYF", "AD_KYF"],
+      "delimiter": ","
+  },
+  "t_ds00473d1_l00": { 
+      "container":"dss",  
+      "cc_columns":[],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": "\t"
+  },
+  "t_ds00473d2_l00": { 
+      "container":"dss",  
+      "cc_columns":[],        
+      "free_text_columns":[],
+      "skip_check_columns": [],
+      "delimiter": ","
+  }
+}
