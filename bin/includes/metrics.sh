@@ -1,8 +1,6 @@
 #!/bin/bash
 
 ################################################################################
-
-################################################################################
 # This script is intended to be sourced by other scripts.
 # It contains functions for logging and updating metrics.
 ################################################################################
@@ -26,6 +24,7 @@ increment_processed_count_in_metrics() {
 }
 
 log_metrics() {
+  trap 'RUNNING=false' SIGINT SIGTERM
   while [ "$RUNNING" = true ]; do
     if [[ ! -f "$QUEUE_FILE" ]] || ! jq . "$QUEUE_FILE" &>/dev/null; then
       log_message "ERROR" "metrics" "Queue file is missing or invalid: $QUEUE_FILE"

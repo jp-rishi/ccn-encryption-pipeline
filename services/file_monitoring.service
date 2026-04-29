@@ -1,5 +1,5 @@
 [Unit]
-Description=SFTP Data Monitoring Service
+Description= File Monitoring Service
 After=network.target
 
 [Service]

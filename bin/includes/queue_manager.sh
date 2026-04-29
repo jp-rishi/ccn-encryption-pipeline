@@ -100,8 +100,10 @@ update_queue_file() {
 # Process File in Queue Function
 ####################################
 process_queue() {
+  trap 'RUNNING=false' SIGINT SIGTERM
   local last_state="non-empty"
   while [ "$RUNNING" = true ]; do
+    # Find a pending file.
     acquire_lock "$QUEUE_FILE.lock"
     local file
     file=$(jq -r '.[] | select(.status == "pending") | .file' "$QUEUE_FILE" | head -n 1)
@@ -118,101 +120,137 @@ process_queue() {
 
     log_message "INFO" "queue_manager" "Processing file: $file"
 
-    # Mark file as processing with enhanced error handling.
+    # Mark file as processing.
     acquire_lock "$QUEUE_FILE.lock"
     if jq --arg file "$file" 'map(if .file == $file then .status = "processing" else . end)' "$QUEUE_FILE" > "$QUEUE_FILE.tmp"; then
       if mv "$QUEUE_FILE.tmp" "$QUEUE_FILE"; then
         log_message "DEBUG" "queue_manager" "Marked $file as processing."
       else
         log_message "ERROR" "queue_manager" "Failed to rename queue file while marking processing for $file"
-        send_webhook_notification "Critical: Failed to update queue file for $file"
+        send_webhook_notification "Critical: Failed to update queue file for $file" || true
         rm -f "$QUEUE_FILE.tmp"
       fi
     else
       log_message "ERROR" "queue_manager" "jq failed to mark $file as processing"
-      send_webhook_notification "Critical: jq failed update on queue file for $file"
+      send_webhook_notification "Critical: jq failed update on queue file for $file" || true
       rm -f "$QUEUE_FILE.tmp"
     fi
     release_lock "$QUEUE_FILE.lock"
 
-    # Temporarily disable -e so nonzero exit won't abort the loop.
+    # Run the processing script.
     set +e
     bash "$PROCESSING_SCRIPT" "$file"
     local status=$?
     set -e
     log_message "DEBUG" "queue_manager" "Processing script for $file exited with status: $status"
 
+    #
+    # Begin update/cleanup area.
+    # We acquire the lock before updating the queue
+    # and then execute the update code inside a block so that even
+    # if a command fails, we always call release_lock.
+    #
     acquire_lock "$QUEUE_FILE.lock"
-    if [ $status -eq 0 ]; then
-      log_message "INFO" "queue_manager" "Successfully processed file: $file"
-      # Mark file as processed.
-      if jq --arg file "$file" 'map(if .file == $file then .status = "processed" else . end)' "$QUEUE_FILE" > "$QUEUE_FILE.tmp"; then
-        if mv "$QUEUE_FILE.tmp" "$QUEUE_FILE"; then
-          log_message "DEBUG" "queue_manager" "Marked $file as processed."
+    {
+      if [ $status -eq 0 ]; then
+        log_message "INFO" "queue_manager" "Successfully processed file: $file"
+        # Mark file as processed.
+        if jq --arg file "$file" 'map(if .file == $file then .status = "processed" else . end)' "$QUEUE_FILE" > "$QUEUE_FILE.tmp"; then
+          if mv "$QUEUE_FILE.tmp" "$QUEUE_FILE"; then
+            log_message "DEBUG" "queue_manager" "Marked $file as processed."
+          else
+            log_message "ERROR" "queue_manager" "Failed to rename queue file while marking processed for $file"
+            send_webhook_notification "Critical: Failed to update queue file for $file" || true
+            rm -f "$QUEUE_FILE.tmp"
+          fi
         else
-          log_message "ERROR" "queue_manager" "Failed to rename queue file while marking processed for $file"
-          send_webhook_notification "Critical: Failed to update queue file for $file"
+          log_message "ERROR" "queue_manager" "jq failed to mark $file as processed"
+          send_webhook_notification "Critical: jq failed to update queue for $file" || true
           rm -f "$QUEUE_FILE.tmp"
         fi
-      else
-        log_message "ERROR" "queue_manager" "jq failed to mark $file as processed"
-        send_webhook_notification "Critical: jq failed to update queue for $file"
-        rm -f "$QUEUE_FILE.tmp"
-      fi
-      # Remove the processed file from the queue.
-      if jq --arg file "$file" 'map(select(.file != $file))' "$QUEUE_FILE" > "$QUEUE_FILE.tmp"; then
-        if mv "$QUEUE_FILE.tmp" "$QUEUE_FILE"; then
-          log_message "DEBUG" "queue_manager" "Removed $file from queue."
+        # Remove the processed file from the queue.
+        if jq --arg file "$file" 'map(select(.file != $file))' "$QUEUE_FILE" > "$QUEUE_FILE.tmp"; then
+          if mv "$QUEUE_FILE.tmp" "$QUEUE_FILE"; then
+            log_message "DEBUG" "queue_manager" "Removed $file from queue."
+          else
+            log_message "ERROR" "queue_manager" "Failed to remove $file from queue during rename."
+            send_webhook_notification "Critical: Failed to remove file from queue for $file" || true
+            rm -f "$QUEUE_FILE.tmp"
+          fi
         else
-          log_message "ERROR" "queue_manager" "Failed to remove $file from queue during rename."
-          send_webhook_notification "Critical: Failed to remove file from queue for $file"
+          log_message "ERROR" "queue_manager" "jq failed to remove $file from queue"
+          send_webhook_notification "Critical: jq failed to remove file from queue for $file" || true
           rm -f "$QUEUE_FILE.tmp"
         fi
+        # Update the metrics.
+        increment_processed_count_in_metrics
       else
-        log_message "ERROR" "queue_manager" "jq failed to remove $file from queue"
-        send_webhook_notification "Critical: jq failed to remove file from queue for $file"
-        rm -f "$QUEUE_FILE.tmp"
-      fi
-      # Update the metrics.
-      increment_processed_count_in_metrics 
-    else
-      log_message "ERROR" "queue_manager" "Failed to process file: $file"
-      # Mark file as failed.
-      if jq --arg file "$file" 'map(if .file == $file then .status = "failed" else . end)' "$QUEUE_FILE" > "$QUEUE_FILE.tmp"; then
-        if mv "$QUEUE_FILE.tmp" "$QUEUE_FILE"; then
-          log_message "DEBUG" "queue_manager" "Marked $file as failed."
+        log_message "ERROR" "queue_manager" "Failed to process file: $file"
+        # Mark file as failed.
+        if jq --arg file "$file" 'map(if .file == $file then .status = "failed" else . end)' "$QUEUE_FILE" > "$QUEUE_FILE.tmp"; then
+          if mv "$QUEUE_FILE.tmp" "$QUEUE_FILE"; then
+            log_message "DEBUG" "queue_manager" "Marked $file as failed."
+          else
+            log_message "ERROR" "queue_manager" "Failed to rename queue file while marking failed for $file"
+            send_webhook_notification "Critical: Failed to update queue file for $file" || true
+            rm -f "$QUEUE_FILE.tmp"
+          fi
         else
-          log_message "ERROR" "queue_manager" "Failed to rename queue file while marking failed for $file"
-          send_webhook_notification "Critical: Failed to update queue file for $file"
+          log_message "ERROR" "queue_manager" "jq failed to mark $file as failed"
+          send_webhook_notification "Critical: jq failed to update queue for $file" || true
           rm -f "$QUEUE_FILE.tmp"
         fi
-      else
-        log_message "ERROR" "queue_manager" "jq failed to mark $file as failed"
-        send_webhook_notification "Critical: jq failed to update queue for $file"
-        rm -f "$QUEUE_FILE.tmp"
+        send_webhook_notification "Processing failed for file: $file" || true
       fi
-      send_webhook_notification "Processing failed for file: $file"
-    fi
+    } || true
+    # Always release the lock regardless of errors.
     release_lock "$QUEUE_FILE.lock"
+    #
+    # End update/cleanup area.
+    #
+
     last_state="non-empty"
   done
 }
+
 
 ####################################
 # Scan Existing Files
 ####################################
 scan_existing_files() {
-  log_message "INFO" "queue_manager" "Scanning directory for existing .$FILE_EXTENSION files..."
-  for file in $(ls -1rt "$MONITOR_DIR"/*."$FILE_EXTENSION" 2>/dev/null); do
-    [ -e "$file" ] || continue
-    if jq -e --arg file "$file" '.[] | select(.file == $file)' "$QUEUE_FILE" &>/dev/null; then
-      log_message "DEBUG" "queue_manager" "File already in queue: $file"
-    else
-      log_message "INFO" "queue_manager" "Adding existing file to queue: $file"
-      add_to_queue "$file"
-    fi
+  trap 'RUNNING=false' SIGINT SIGTERM
+  while [ "$RUNNING" = true ]; do
+    log_message "INFO" "queue_manager" "Scanning directory for existing .$FILE_EXTENSION files..."
+    
+    # Use find to list matching files, then stat to get modification times,
+    # sort them and finally process each file in order.
+    find "$MONITOR_DIR" -maxdepth 1 -type f -name "*.$FILE_EXTENSION" -print0 2>/dev/null | \
+      xargs -0 stat --format '%Y %n' 2>/dev/null | sort -n | cut -d' ' -f2- | \
+      while IFS= read -r file; do
+        if [ ! -e "$file" ]; then
+          continue
+        fi
+        
+        # Attempt to acquire the lock.
+        if ! acquire_lock "$QUEUE_FILE.lock"; then
+          log_message "ERROR" "queue_manager" "Failed to acquire lock on $QUEUE_FILE.lock while scanning $file"
+          continue
+        fi
+
+        # Check if the file is already in the queue.
+        if jq -e --arg file "$file" '.[] | select(.file == $file)' "$QUEUE_FILE" &>/dev/null; then
+          release_lock "$QUEUE_FILE.lock"
+          log_message "DEBUG" "queue_manager" "File already in queue: $file"
+        else
+          log_message "INFO" "queue_manager" "Adding existing file to queue: $file"
+          add_to_queue "$file"
+        fi
+      done
+
+    sleep "$HEALTH_CHECK_INTERVAL"
   done
 }
+
 
 ####################################
 # Check Deleted Files

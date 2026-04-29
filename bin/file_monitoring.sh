@@ -9,9 +9,6 @@ IFS=$'\n\t'
 #
 ################################################################################
 
-# Trap SIGINT, SIGTERM, and EXIT for graceful termination and cleanup.
-trap 'cleanup_and_exit' SIGINT SIGTERM EXIT
-
 #########################
 # Configuration & Setup #
 #########################
@@ -46,9 +43,12 @@ source "$BASE_APP_DIR/bin/includes/temp_tracker.sh" || { log_message "ERROR" "pr
 source "$BASE_APP_DIR/bin/includes/state_manager.sh" || { log_message "ERROR" "process_csv" "Failed to source state_manager.sh"; exit 1; }
 source "$BASE_APP_DIR/bin/includes/metrics.sh" || { log_message "ERROR" "process_csv" "Failed to source metrics.sh"; exit 1; }
 
+# Trap SIGINT, SIGTERM, and EXIT for graceful termination and cleanup.
+trap 'cleanup_and_exit' SIGINT SIGTERM EXIT
+
 # Validate required configuration variables.
 validate_config() {
-  local required_vars=("MONITOR_DIR" "PROCESSING_SCRIPT" "BASE_LOG_DIR" "WEBHOOK_URL")
+  local required_vars=("MONITOR_DIR" "PROCESSING_SCRIPT" "BASE_LOG_DIR" "BASE_QUEUE_DIR" "WEBHOOK_URL")
   for var in "${required_vars[@]}"; do
     if [ -z "${!var:-}" ]; then
       log_message "ERROR" "file_monitoring" "$var is not set. Exiting."
@@ -70,8 +70,8 @@ exec 2>>"$BASE_LOG_DIR/file_monitoring_stderr.log"
 #########################
 # Global Variables      #
 #########################
-QUEUE_FILE="$BASE_LOG_DIR/file_queue.json"
-TEMP_FILE_TRACKER="$BASE_LOG_DIR/temp_files.json"
+QUEUE_FILE="$BASE_QUEUE_DIR/file_queue.json"
+TEMP_FILE_TRACKER="$BASE_QUEUE_DIR/temp_files.json"
 METRICS_LOG_FILE="$BASE_LOG_DIR/metrics.log"
 QUEUE_CHECK_INTERVAL=10
 HEALTH_CHECK_INTERVAL=1000
@@ -106,13 +106,14 @@ main() {
   initialize_json_file "$TEMP_FILE_TRACKER"
   reload_state
   reset_processing_files
-  scan_existing_files
-
+  
   # Start background processes and capture their errors.
+  scan_existing_files &
   monitor_directory &
   process_queue &
   log_metrics &
   cleanup_temp_file_tracker_periodically &
+  cleanup_stale_locks &
   check_deleted_files &
   check_failed_files &
   save_state_periodically &

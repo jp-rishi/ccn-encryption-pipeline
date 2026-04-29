@@ -27,6 +27,7 @@ reload_state() {
 # save_state_periodically: Regularly verify and back up the critical JSON files.
 # Also, perform a health check: if a file is missing, reinitialize it and send a webhook notification.
 save_state_periodically() {
+  trap 'RUNNING=false' SIGINT SIGTERM
   while [ "$RUNNING" = true ]; do
     # Health-check and reinitialize if needed.
     if [ ! -f "$QUEUE_FILE" ]; then

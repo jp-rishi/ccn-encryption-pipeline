@@ -14,24 +14,28 @@ if [[ -z "$WEBHOOK_URL" ]]; then
   exit 1
 fi
 
-# Constants for retries
-readonly RETRY_COUNT=3
-readonly RETRY_DELAY=5
-readonly TIMEOUT=10
+# Configuration constants with default values.
+readonly RETRY_COUNT="${RETRY_COUNT:-3}"
+readonly RETRY_DELAY="${RETRY_DELAY:-5}"
+readonly TIMEOUT="${TIMEOUT:-10}"
+readonly SUCCESS_CODE_PATTERN="^2[0-9][0-9]$"   # Expected successful HTTP codes (e.g., 200, 201, etc.)
 
-###################
-# Webhook Function        
-###################
-# This function sends a message to a specified webhook URL.
+#############################
+# Function: send_webhook_notification
+# Description:
+#   Sends a JSON payload to the webhook URL with a retry mechanism.
+# Arguments:
+#   $1 - The message text to be sent.
+#############################
 send_webhook_notification() {
   local message="$1"
   
-  # Validate that the message is not empty.
   if [[ -z "$message" ]]; then
-    log_message "ERROR" "file_monitoring" "No message provided to send_webhook_notification."
+    log_message "ERROR" "notification" "No message provided to send_webhook_notification."
     return 1
   fi
 
+  # Build the JSON payload using jq for safety.
   local payload
   payload=$(jq -n --arg text "$message" '{
     type: "message",
@@ -51,15 +55,33 @@ send_webhook_notification() {
 
   local attempt
   for (( attempt = 1; attempt <= RETRY_COUNT; attempt++ )); do
-    # Using --fail ensures that curl returns a non-zero code for HTTP errors.
-    if curl -s --fail --max-time "$TIMEOUT" -X POST -H 'Content-Type: application/json' -d "$payload" "$WEBHOOK_URL"; then
-      log_message "DEBUG" "file_monitoring" "Webhook notification sent successfully on attempt ${attempt}."
-      return 0
+    # Send the request with curl, capturing both response body and HTTP status.
+    local response
+    set +e # Do not exit immediately if curl fails.
+    if ! response=$(curl -s --fail --max-time "$TIMEOUT" -w "HTTPSTATUS:%{http_code}" \
+      -X POST -H 'Content-Type: application/json' -d "$payload" "$WEBHOOK_URL"); then
+      log_message "DEBUG" "notification" "Attempt ${attempt}: Network or curl error encountered. Retrying in ${RETRY_DELAY} seconds..."
+      sleep "$RETRY_DELAY"
+      continue
     fi
-    log_message "WARN" "file_monitoring" "Attempt ${attempt} failed to send webhook notification. Retrying in ${RETRY_DELAY} seconds..."
-    sleep "$RETRY_DELAY"
+    set -e # Exit immediately if curl fails.
+
+    # Extract HTTP status code.
+    local http_code
+    http_code=$(echo "$response" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
+    # Extract the response body.
+    local response_body
+    response_body=$(echo "$response" | sed -e 's/HTTPSTATUS:.*//')
+
+    if [[ "$http_code" =~ $SUCCESS_CODE_PATTERN ]]; then
+      log_message "DEBUG" "notification" "Webhook notification sent successfully on attempt ${attempt} (HTTP $http_code)."
+      return 0
+    else
+      log_message "DEBUG" "notification" "Attempt ${attempt} returned HTTP $http_code with response: $response_body. Retrying in ${RETRY_DELAY} seconds..."
+      sleep "$RETRY_DELAY"
+    fi
   done
 
-  log_message "ERROR" "file_monitoring" "Failed to send webhook notification after ${RETRY_COUNT} attempts."
+  log_message "WARN" "notification" "Failed to send webhook notification after ${RETRY_COUNT} attempts."
   return 1
 }

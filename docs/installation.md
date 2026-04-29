@@ -12,7 +12,7 @@ cd data-encryption-pipeline-to-adls
 ```
 
 ## 2. Configure the Environment
-Edit the configuration file at config/config.env with your specific settings.\
+Edit the configuration file at `config/config.env` with your specific settings.\
 For example:
 ```bash
 # Directory to monitor for incoming files
@@ -20,6 +20,9 @@ MONITOR_DIR="/var/sftp/data"
 
 # Output directory for processed Parquet files
 BASE_OUTPUT_DIR="/var/sftp/output"
+
+# Queue directory
+BASE_QUEUE_DIR="/var/sftp/queue"
 
 # Log directory
 BASE_LOG_DIR="/var/sftp/log"

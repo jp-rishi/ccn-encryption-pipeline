@@ -51,6 +51,15 @@ The application is divided into several layers, each responsible for a specific 
 - **Logging:**
   - Logs are written to various files under `BASE_LOG_DIR` mentioned in `config/config.env` to capture runtime events, errors, and performance metrics.
 
+- **Queues:**
+  - Queue files are stored in the `BASE_QUEUE_DIR` mentioned in `config/config.env`.
+  - `file_queue.json`: Contains files to be processed in the monitored directory.
+  - `file_queue.json.lock`: Lock file for `file_queue`.
+  - `file_queue.json.bak`: Backup file for `file_queue`.
+  - `temp_files.json`: Contains temporary files in the monitored directory.
+  - `temp_files.json.lock`: Lock file for `temp_files`.
+  - `temp_files.json.bak`: Backup file for `temp_files`.
+
 - **Testing:**
   - Tests are separated into Bash tests (using bats-core) and Python tests (using pytest) and reside in the `tests/` directory.
 
@@ -59,7 +68,7 @@ The application is divided into several layers, each responsible for a specific 
 A high-level diagram of the pipeline:
 
 1. New CSV files are dropped or transferred into a monitored directory.
-2. `file_monitoring.sh` detects the new files and adds them to a processing queue and runs `file_processing.sh` for each file in the queue.
+2. `file_monitoring.sh` detects the new files and adds them to a processing queue defined by `BASE_QUEUE_DIR` in `config/config.env` and runs `file_processing.sh` for each file in the queue.
 3. `file_processing.sh` 
     -   calls Python scripts to encrypt CCNs, and converts data to Parquet.
     -   Processed files are transferred to ADLS via AzCopy.

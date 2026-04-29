@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 # Ensure BASE_APP_DIR is set and valid
 if [ -z "$BASE_APP_DIR" ] || [ ! -d "$BASE_APP_DIR" ]; then
   echo "BASE_APP_DIR is not set or is not a valid directory. Please set it before sourcing this script."

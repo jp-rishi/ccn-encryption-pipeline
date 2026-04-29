@@ -988,7 +988,7 @@ if __name__ == "__main__":
     # Log the delimiter being used
     logger.info(f"Using delimiter: '{delimiter}' for file: {input_file}")
 
-    detected_ccnum_log_file = f"{BASE_LOG_DIR}/{base_filename}_detected_ccnum.log"
+    detected_ccnum_log_file = f"{BASE_LOG_DIR}/{base_filename}/{base_filename}_detected_ccnum.log"
 
     process_file(
         input_file,

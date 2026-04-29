@@ -35,6 +35,38 @@ cleanup_tmp_files() {
   log_message "INFO" "utils" "Cleaned up any leftover .tmp files on startup."
 }
 
+cleanup_stale_locks() {
+  trap 'RUNNING=false' SIGINT SIGTERM
+  while [ "$RUNNING" = true ]; do
+    for lock in "$QUEUE_FILE.lock" "$TEMP_FILE_TRACKER.lock"; do
+      if [ -f "$lock" ]; then
+        if ! lock_pid=$(cat "$lock" 2>/dev/null); then
+          log_message "WARN" "locks" "Failed to read PID from $lock; skipping"
+          continue
+        fi
+
+        if ! lock_mtime=$(stat -c %Y "$lock" 2>/dev/null); then
+          log_message "WARN" "locks" "Failed to stat $lock; skipping"
+          continue
+        fi
+
+        current_time=$(date +%s)
+        age=$(( current_time - lock_mtime ))
+        
+        if ! ps -p "$lock_pid" > /dev/null 2>&1; then
+          log_message "WARN" "locks" "Removing stale lock $lock held by PID $lock_pid (age ${age}s)"
+          if rm -f "$lock"; then
+            send_webhook_notification "Warning: Removed stale lock $lock (PID $lock_pid, age ${age}s)"
+          else
+            log_message "ERROR" "locks" "Failed to remove stale lock $lock"
+          fi
+        fi
+      fi
+    done
+    sleep "$HEALTH_CHECK_INTERVAL"
+  done
+}
+
 cleanup_and_exit() {
   if [ "$RUNNING" = true ]; then
     log_message "INFO" "utils" "Shutting down gracefully."
